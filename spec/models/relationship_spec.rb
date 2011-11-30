@@ -5,9 +5,12 @@ describe Relationship do
     @rel = Fabricate(:relationship)
   end
   it "displays the relationship from node1 to node2" do
-    @rel.sent1.should include(@rel.node1.title)
-    @rel.sent1.should include(@rel.node2.title)
+    Ecosystem::SentenceSubstitution.should_receive(:populate).with(@rel.sentence1, @rel.node1.to_s, @rel.node2.to_s)
+    @rel.sent1
   end
+  # it "substitutes two values in a sentence for the %1 and %2 in the sentence" do
+  #   @rel.populate(sentence1, node1.title, node2.title).should == ""
+  # end
   it "displays the relationship from node2 to node1" do
     @rel.sent2.should include(@rel.node1.title)
     @rel.sent2.should include(@rel.node2.title)

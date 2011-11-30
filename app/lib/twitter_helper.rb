@@ -19,8 +19,8 @@ module  TwitterHelper
   end
 
   def self.handle_parser(string, link_class="", target="")
-    return string.gsub(/@(\w+)/) {|x| "<a href='https://twitter.com/#!/#{x.gsub "@", ""}' target='#{target}' class='#{link_class}'>#{x}</a>"}
-  end
+    return string.gsub(/@(\w+)/) {|x| "<a href='https://twitter.com/#!/#{$1}' target='#{target}' class='#{link_class}'>#{x}</a>"}
+ end
   
   def self.handle_link(handle, link_class="", target="")
     return "<a href='https://twitter.com/#!/#{handle}' target='#{target}' class='#{link_class}'>@#{handle}</a>"

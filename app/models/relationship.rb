@@ -1,4 +1,5 @@
 class Relationship < ActiveRecord::Base
+    
   belongs_to :node1, :class_name => "Node"
   belongs_to :node2, :class_name => "Node"
   
@@ -59,7 +60,9 @@ class Relationship < ActiveRecord::Base
 
   def sent1(options = {:filled_with => 'nodes'})
     if options[:filled_with] == 'nodes'
-      return populate(sentence1)
+      #return populate(sentence1)
+      return Ecosystem::SentenceSubstitution.populate(sentence1, node1.to_s, node2.to_s)
+      
     else
       return sentence1
     end
@@ -67,7 +70,8 @@ class Relationship < ActiveRecord::Base
 
   def sent2(options = {:filled_with => 'nodes'})
     if options[:filled_with] == 'nodes'
-      return populate(sentence2)
+      #return populate(sentence2)
+      return Ecosystem::SentenceSubstitution.populate(sentence2, node1.to_s, node2.to_s)
     else
       return sentence2
     end
@@ -82,9 +86,9 @@ class Relationship < ActiveRecord::Base
     end
   end
 
-  def populate(sentence, options = {:val1 => node1.to_s, :val2 => node2.to_s})
-    sentence.sub("%1", options[:val1]).sub("%2", options[:val2]).html_safe
-  end
+  #   def populate(sentence, options = {:val1 => node1.to_s, :val2 => node2.to_s})
+  #     sentence.sub("%1", options[:val1]).sub("%2", options[:val2])
+  #   end
 
   def sentenceValid?(sentence)
     sentence.include?('%1') and sentence.include?('%2')
