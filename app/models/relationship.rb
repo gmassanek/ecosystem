@@ -1,4 +1,5 @@
 class Relationship < ActiveRecord::Base
+  require 'sentence_substitution'
     
   belongs_to :node1, :class_name => "Node"
   belongs_to :node2, :class_name => "Node"
@@ -60,9 +61,7 @@ class Relationship < ActiveRecord::Base
 
   def sent1(options = {:filled_with => 'nodes'})
     if options[:filled_with] == 'nodes'
-      #return populate(sentence1)
       return Ecosystem::SentenceSubstitution.populate(sentence1, node1.to_s, node2.to_s)
-      
     else
       return sentence1
     end

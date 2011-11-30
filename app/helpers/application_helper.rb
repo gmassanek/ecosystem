@@ -1,4 +1,6 @@
 module ApplicationHelper
+  require 'sentence_substitution'
+
   def markdown(text)
     options = [:hard_wrap, :filter_html, :autolink, :no_intraemphasis, :fenced_code, :gh_blockcode]
     syntax_highlighter(Redcarpet.new(text, *options).to_html).html_safe
@@ -25,12 +27,13 @@ module ApplicationHelper
     othernode = relationship.other_node(node)
     link_to_other_node = link_to othernode.to_s, node_url(othernode), :id => "node_#{othernode.id}"
     if relationship.node1 == node
-      full_sentence = relationship.populate(sentence, {:val1 => node.to_s, :val2 => othernode.to_s})
+      full_sentence = Ecosystem::SentenceSubstitution.populate(sentence, node.to_s, othernode.to_s)
     else
-      full_sentence = relationship.populate(sentence,{:val1 => othernode.to_s, :val2 => node.to_s})
+      full_sentence = Ecosystem::SentenceSubstitution.populate(sentence, othernode.to_s, node.to_s)
     end
     link_sentence = link_to full_sentence, relationship, :class => 'relSentenceLink loud', :id => "relationshipLink#{relationship.id}"
     link_to_other_node + " - " + link_sentence
+
   end
 
   def relationship_sentence_with_links(relationship)
